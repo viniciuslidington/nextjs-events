@@ -1,16 +1,30 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Event } from '../lib/events';
 
-interface Props {
-  title: string;
-  image: string;
-}
-
-const EventCard = ({title, image}:Props) => {
+const EventCard = ({title, image, slug, location, data, time}:Event) => {
   return (
-    <Link href={"/events"} id="event-cart">
+    <Link href={`/events/${slug}`} id="event-cart">
+
       <Image src={image} alt={title} width={410} height={300} className="poster"/>
+
+      <div className="flex flex-row gap-2">
+        <Image src="/icons/pin.svg" alt="location" width={14} height={14}/>
+        <p>{location}</p>
+      </div>
+
       <p className="title">{title}</p>
+
+      <div className="datatime">
+        <div>
+          <Image src="/icons/calendar.svg" alt="date" width={14} height={14} />
+          <p>{data}</p>
+        </div>
+        <div>
+          <Image src="/icons/clock.svg" alt="clock" width={14} height={14}/>
+          <p>{time}</p>
+        </div>
+      </div>
     </Link>
   )
 }
