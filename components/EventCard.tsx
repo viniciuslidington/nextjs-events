@@ -4,7 +4,7 @@ import { Event } from '../lib/events';
 
 const EventCard = ({title, image, slug, location, data, time}:Event) => {
   return (
-    <Link href={`/events/${slug}`} id="event-cart">
+    <Link href={`/events/${slug}`} id="event-card">
 
       <Image src={image} alt={title} width={410} height={300} className="poster"/>
 
@@ -15,7 +15,7 @@ const EventCard = ({title, image, slug, location, data, time}:Event) => {
 
       <p className="title">{title}</p>
 
-      <div className="datatime">
+      <div className="datetime">
         <div>
           <Image src="/icons/calendar.svg" alt="date" width={14} height={14} />
           <p>{data}</p>
