@@ -47,6 +47,7 @@ async function connectDB(): Promise<typeof mongoose> {
 
     // Create a new connection promise
     cached.promise = mongoose.connect(MONGODB_URI!, options).then((mongoose) => {
+      console.log()
       return mongoose;
     });
   }

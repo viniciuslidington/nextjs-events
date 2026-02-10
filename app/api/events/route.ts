@@ -1,5 +1,7 @@
 import connectDB from "@/lib/mongodb";
+
 import { NextRequest, NextResponse } from "next/server";
+import Event from "@/database/event.model";
 
 export async function POST(req: NextRequest) {
   try{
@@ -8,9 +10,28 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData();
     let event;
 
+    try{
+      event = Object.fromEntries(formData.entries());
+    }catch{
+      return NextResponse.json({message: 'Invalid JSON data format'}, {status:400})
+    }
+    const createdEvent = await Event.create(event);
 
+    return NextResponse.json({message:'Event created successfully', event: createdEvent}, {status:201})
   }catch (e){
     console.error(e);
     return NextResponse.json({message:'Event creation failed', error: e instanceof Error ? e.message :'Unknown'})
+  }
+}
+
+export async function GET(){
+  try{
+    await connectDB();
+
+    const events = await Event.find().sort({ createdAt: -1});
+    return NextResponse.json({message:'Event fetched successfully', events},{status:201})
+
+  }catch(e){
+    return NextResponse.json({message:'Event fetching failed',error:e},{status:500})
   }
 }
