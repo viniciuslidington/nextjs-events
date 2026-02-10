@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Event } from '../lib/events';
 
-const EventCard = ({title, image, slug, location, data, time}:Event) => {
+const EventCard = ({title, image, slug, location, date, time}:Event) => {
   return (
     <Link href={`/events/${slug}`} id="event-card">
 
@@ -18,7 +18,7 @@ const EventCard = ({title, image, slug, location, data, time}:Event) => {
       <div className="datetime">
         <div>
           <Image src="/icons/calendar.svg" alt="date" width={14} height={14} />
-          <p>{data}</p>
+          <p>{date}</p>
         </div>
         <div>
           <Image src="/icons/clock.svg" alt="clock" width={14} height={14}/>
