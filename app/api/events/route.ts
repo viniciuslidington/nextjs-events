@@ -15,7 +15,17 @@ export async function POST(req: NextRequest) {
     }catch{
       return NextResponse.json({message: 'Invalid JSON data format'}, {status:400})
     }
-    const createdEvent = await Event.create(event);
+
+    const tagsstring = JSON.parse(formData.get('tags') as string)
+    const agendastring = JSON.parse(formData.get('agenda') as string)
+
+    const createdEvent = await Event.create(
+      {
+        ...event,
+        tags: tagsstring,
+        agenda: agendastring
+      }
+    );
 
     return NextResponse.json({message:'Event created successfully', event: createdEvent}, {status:201})
   }catch (e){

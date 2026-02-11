@@ -1,4 +1,7 @@
 import BookEvent from "@/components/BookEvent";
+import EventCard from "@/components/EventCard";
+import { IEvent } from "@/database/event.model";
+import { getSimilarEventsBySlug } from "@/lib/actions/event.actions";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -35,14 +38,18 @@ const EventTags = ({tags}:{tags:string[]}) => {
   )
 }
 
-const bookinks:number = 10;
-
 const EventDetailsPage = async ({params}:{params: Promise<{slug: string}>}) => {
   const { slug } = await params;
   const request = await fetch(`${BASE_URL}/api/events/${slug}`)
   const { event } = await request.json();
 
   if (!event) return notFound();
+
+  const bookinks:number = 10;
+
+  const similarEvent: IEvent[] = await getSimilarEventsBySlug(slug);
+  
+  console.log(similarEvent)
 
   return (
     <section id="event">
@@ -69,7 +76,7 @@ const EventDetailsPage = async ({params}:{params: Promise<{slug: string}>}) => {
             <EventDatailItem icon="/icons/audience.svg" alt="audience" label={event.audience}/>
           </section>
 
-          <EventAgenda agendaItems={JSON.parse(event.agenda[0])}/>
+          <EventAgenda agendaItems={event.agenda}/>
 
           <section>
             <div className="flex-col-gap-2">
@@ -79,7 +86,7 @@ const EventDetailsPage = async ({params}:{params: Promise<{slug: string}>}) => {
           </section>
 
           <section>
-            <EventTags tags={JSON.parse(event.tags[0])}/>
+            <EventTags tags={event.tags}/>
           </section>
 
         </div>
@@ -99,7 +106,14 @@ const EventDetailsPage = async ({params}:{params: Promise<{slug: string}>}) => {
           </div>
         </aside>
       </div>
-
+      <div className="flex w-full flex-col gap-4 pt-20">
+        <h3>Similar Events</h3>
+        <div className="events">
+          {similarEvent.length > 0 && similarEvent.map((similarEvent:IEvent)=>(
+            <EventCard key={similarEvent.slug} {...similarEvent}/>
+          ))}
+        </div>
+      </div>
     </section>
   )
 }
