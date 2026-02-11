@@ -1,3 +1,4 @@
+import BookEvent from "@/components/BookEvent";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -33,6 +34,9 @@ const EventTags = ({tags}:{tags:string[]}) => {
     </div>
   )
 }
+
+const bookinks:number = 10;
+
 const EventDetailsPage = async ({params}:{params: Promise<{slug: string}>}) => {
   const { slug } = await params;
   const request = await fetch(`${BASE_URL}/api/events/${slug}`)
@@ -80,9 +84,20 @@ const EventDetailsPage = async ({params}:{params: Promise<{slug: string}>}) => {
 
         </div>
         {/*rigth side */}
-        <div className="booking">
-          <p className="text-lg font-semibold">Book Event</p>
-        </div>
+        <aside className="booking">
+          <div className="signup-card">
+            <h3>Book Your Spot</h3>
+            {bookinks > 0 ? (
+              <p className="text-sm">
+                Join {bookinks} people who have already booked their spot
+              </p>
+              ):(
+                <p className="text-sm">Be the firt to book your sport!</p>
+              )}
+            
+            <BookEvent/>
+          </div>
+        </aside>
       </div>
 
     </section>
